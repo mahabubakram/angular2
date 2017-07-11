@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Statistik</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Latest compiled and minified CSS -->
+
+  <!-- 1. Load libraries -->
+  <!-- Polyfill(s) for older browsers -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+  <script src="../../../node_modules/systemjs/dist/system.src.js"></script>
+  <link rel="stylesheet" href="app/styles.css">
+  <!-- 2. Configure SystemJS -->
+  <script src="src/app/systemjs.config.js"></script>
+  <script>
+    window.systemJsBaseUrl = '';
+    System.import('src/app/polyfills.js')
+      .then(function () {
+        return System.import('src/main.js');
+      })
+      .then(function () {
+        console.log('Loaded javascript files via systemjs -> start initialization of application now...');
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  </script>
+
+</head>
+<body>
+<app-root>Loading...</app-root>
+</body>
+</html>

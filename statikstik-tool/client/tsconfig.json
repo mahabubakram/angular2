@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "include": [
+    "./src/**/*",
+    "./testing/**/*"
+  ],
+  "exclude": [
+    "../node_modules/**/*",
+    "node_modules/**/*",
+    "../server/**/*",
+    "./server/**/*"
+  ],
+  "compileOnSave": true,
+  "buildOnSave": false
+}

@@ -1,0 +1,15 @@
+<div [formGroup]="parentFormGroup" class="form-horizontal">
+  <div formGroupName="{{groupName}}" class="form-group">
+    <div class="row">
+      <label class="col-xs-3 control-label">{{label}}: </label>
+
+      <div class="col-xs-3">
+        <select class="form-control" formControlName="{{controlName}}">
+          <option [ngValue]="entry" *ngFor="let entry of data">{{entry}}</option>
+        </select>
+      </div>
+      <st-error-component [submitted]="submitted" [nameOfFormControl]="label"
+                          [formInput]="dropdownFormControl"></st-error-component>
+    </div>
+  </div>
+</div>

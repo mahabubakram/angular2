@@ -1,0 +1,11 @@
+.has-error{
+  color: red;
+}
+
+.custom-hr{
+  width: 100%;
+  color: deepskyblue;
+  height: 1px;
+  background-color:deepskyblue;
+  margin-bottom: 2px;
+}

@@ -1,0 +1,10 @@
+/node_modules/
+/.idea/
+/dist/
+*.js.map
+/server/@ars/
+/output/
+/client/src/**/*.js
+/client/testing/**/*.js
+/e2e/**/*.js
+!*.config.js

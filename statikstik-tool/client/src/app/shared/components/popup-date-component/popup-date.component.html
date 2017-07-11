@@ -1,0 +1,21 @@
+<div [formGroup]="parentFormGroup" class="form-horizontal">
+  <div formGroupName={{groupName}} class="form-group">
+    <div class="row">
+      <label class="col-xs-3 control-label">{{label}}:</label>
+      <div class="col-xs-6">
+        <div class="input-group">
+          <span class="input-group-btn" *ngIf="showFormattedStage1()">
+            <button type="button" class="btn btn-default" disabled><span>{{formattedDatePart1}}</span></button>
+          </span>
+          <input type="text" class="form-control" placeholder="select a date" value="{{formattedDatePart2}}" name="controlName" formControlName="{{controlName}}">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" (click)="togglePopup()"><span class="glyphicon glyphicon-calendar"></span></button>
+          </span>
+        </div>
+      </div>
+      <st-error-component [submitted]="submitted" [formInput]="dateFormControl"
+                          [nameOfFormControl]="label"></st-error-component>
+    </div>
+    <datepicker class="popup" *ngIf="showDatepicker" name="controlName" formControlName="{{controlName}}" [showWeeks]="true" [startingDay]=1 [datepickerMode] = "datepickerMode"></datepicker>
+  </div>
+</div>

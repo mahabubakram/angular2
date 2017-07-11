@@ -1,0 +1,15 @@
+<div [formGroup]="parentFormGroup" class="form-horizontal">
+  <div formGroupName={{groupName}} class="form-group">
+    <div class="row">
+      <label class="col-xs-3 control-label">{{label}}:</label>
+      <div class="col-xs-6">
+        <my-date-picker name="controlName" formControlName="{{controlName}}" [(options)]="myOptions"
+                        [(selDate)]="selDate"
+                        [placeholder]="placeholder" (dateChanged)="onCalendarChanged($event)">
+        </my-date-picker>
+      </div>
+      <st-error-component [submitted]="submitted" [formInput]="dateFormControl"
+                          [nameOfFormControl]="label"></st-error-component>
+    </div>
+  </div>
+</div>

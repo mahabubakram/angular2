@@ -1,0 +1,32 @@
+<div [formGroup]="parentFormGroup" class="form-horizontal"
+     style="border:1px solid dodgerblue;padding:20px; padding-top: 0;">
+  <div formGroupName="carrierAndJobGroup" class="form-group">
+    <hr style="width: 100%; color: deepskyblue; height: 1px; background-color:deepskyblue; margin-bottom: 2px;"/>
+    <label class="col-xs-12" style="background-color: deepskyblue; text-align: left;">{{listOfTexts.carrier}} Und
+      {{listOfTexts.job}}</label>
+    <div class="row">
+      <label class="col-xs-2 control-label">{{listOfTexts.carrier}}: </label>
+
+      <div class="col-xs-4">
+        <select class="form-control" name="carrier" formControlName="carrier">
+          <option id="carrier-option" *ngFor="let item of traegerData | async" [ngValue]="item.institution" >{{item.institution}}</option>
+        </select>
+      </div>
+
+      <label class="col-xs-2 control-label">{{listOfTexts.job}}: </label>
+      <div class="col-xs-4">
+        <ng-select
+          [allowClear]="false"
+          [items]="abStelleGroupedData | async"
+          [active]="firstAbStelleGroupedData | async"
+          (selected)="selected($event)"
+          placeholder="No Job selected"></ng-select>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+

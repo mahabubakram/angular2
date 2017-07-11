@@ -1,0 +1,138 @@
+<div class="container" style="border:10px solid deepskyblue;padding:20px;">
+  <!--Section: Header for Carrier and Job-->
+  <st-carrier-services *ngIf="isDeveloper() | async" [data]="serviceResult"
+                       [parentFormGroup]="statisticForm"></st-carrier-services>
+
+
+  <form [formGroup]="statisticForm" class="form-horizontal"
+        style="border:1px solid dodgerblue;padding:20px; padding-top: 0;" (ngSubmit)="onSubmit(statisticForm)"
+        novalidate>
+
+    <!--Section: Abfrage-Query-->
+    <st-radio-component [parentFormGroup]="statisticForm" [groupName]="formConfiguration.query.groupName"
+                        [submitted]="submitted"
+                        [data]="abfragen | async" [controlName]="formConfiguration.query.controlName"
+                        [label]="listOfTexts.query.text" [hide]="false"></st-radio-component>
+    <!--Section: Report-->
+    <st-radio-component [parentFormGroup]="statisticForm" [groupName]="formConfiguration.report.groupName"
+                        [submitted]="submitted" (propertyChanged)="onPropertyChange($event)"
+                        [data]="reports | async" [controlName]="formConfiguration.report.controlName"
+                        [label]="listOfTexts.report.text" [hide]="false"></st-radio-component>
+
+
+    <!--Section: Zeitraum-->
+    <div formConfiguration="dateTypeGroup" class="form-group">
+
+      <hr class="custom-hr"/>
+      <label class="col-xs-12"
+             style="background-color: deepskyblue; text-align: left;">{{listOfTexts.dateTime.text}}</label>
+
+      <!--Section: Section: show time range input radio options-->
+
+      <!--Section: Search Time Range-->
+      <st-radio-component style="margin-bottom: 1em;" *ngIf="showtimeRangeOption" [parentFormGroup]="statisticForm"
+                          [groupName]="formConfiguration.dateType.searchScope.groupName" [submitted]="submitted"
+                          [hide]=true
+                          [data]="searchScopes | async"
+                          [controlName]="formConfiguration.dateType.searchScope.controlName"
+                          [label]="listOfTexts.dateTime.searchTimeRange.text"></st-radio-component>
+
+      <div *ngIf="!showOnSpecificReportSelect">
+
+        <!--Section: Section: calendar Week-->
+        <st-date-component [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeWeek.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeWeek.controlName"
+                           [dateType]="formConfiguration.dateType.dateTypeWeek.dateEvent"
+                           [label]="listOfTexts.dateTime.calendarWeek.text"></st-date-component>
+
+<!--        <popup-date        [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeWeek.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeWeek.controlName"
+                           [dateFormatType]="formConfiguration.dateType.dateTypeWeek.dateFormat"
+                           [datepickerMode]="formConfiguration.dateType.dateTypeWeek.datepickerMode"
+                           [dateTypeObject]="'week'"
+                           [label]="listOfTexts.dateTime.calendarWeek.text"></popup-date>-->
+
+
+        <!--Section: Section: calendar Month-->
+<!--        <st-date-component [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeMonth.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeMonth.controlName"
+                           [dateType]="formConfiguration.dateType.dateTypeMonth.datepickerMode"
+                           [label]="listOfTexts.dateTime.calendarMonth.text"></st-date-component>-->
+
+        <popup-date        [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeMonth.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeMonth.controlName"
+                           [dateFormatType]="formConfiguration.dateType.dateTypeMonth.dateFormat"
+                           [datepickerMode]="formConfiguration.dateType.dateTypeMonth.datepickerMode"
+                           [dateTypeObject]="'month'"
+                           [label]="listOfTexts.dateTime.calendarMonth.text"></popup-date>
+
+
+        <!--Section: Section: calendar From-->
+<!--        <st-date-component [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeFrom.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeFrom.controlName"
+                           [label]="listOfTexts.dateTime.calendarFrom.text"></st-date-component>-->
+
+        <popup-date        [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeFrom.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeFrom.controlName"
+                           [dateFormatType]="formConfiguration.dateType.dateTypeFrom.dateFormat"
+                           [datepickerMode]="formConfiguration.dateType.dateTypeFrom.datepickerMode"
+                           [label]="listOfTexts.dateTime.calendarFrom.text"></popup-date>
+
+        <!--Section: Section: calendar To-->
+<!--        <st-date-component [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeTo.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeTo.controlName"
+                           [label]="listOfTexts.dateTime.calendarTo.text"></st-date-component>-->
+
+        <popup-date        [parentFormGroup]="statisticForm"
+                           [groupName]="formConfiguration.dateType.dateTypeTo.groupName" [submitted]="submitted"
+                           [controlName]="formConfiguration.dateType.dateTypeTo.controlName"
+                           [dateFormatType]="formConfiguration.dateType.dateTypeTo.dateFormat"
+                           [datepickerMode]="formConfiguration.dateType.dateTypeTo.datepickerMode"
+                           [label]="listOfTexts.dateTime.calendarTo.text"></popup-date>
+
+        <!--Section: Section: calendar week day-->
+        <st-dropdown-component [parentFormGroup]="statisticForm"
+                               [groupName]="formConfiguration.dateType.dateTypeWeekdays.groupName"
+                               [submitted]="submitted"
+                               [controlName]="formConfiguration.dateType.dateTypeWeekdays.controlName"
+                               [data]="listOfTexts.dateTime.weekday.listOfDays"
+                               [label]="listOfTexts.dateTime.weekday.text"></st-dropdown-component>
+      </div>
+
+      <!--Section: Section: calendar Working Day-->
+      <st-dropdown-component *ngIf="showOnSpecificReportSelect" [parentFormGroup]="statisticForm"
+                             [groupName]="formConfiguration.dateType.dateTypeWorkingdays.groupName"
+                             [submitted]="submitted"
+                             [controlName]="formConfiguration.dateType.dateTypeWorkingdays.controlName"
+                             [data]="workingDays | async"
+                             [label]="listOfTexts.dateTime.workingday.text"></st-dropdown-component>
+
+    </div>
+
+    <!--Section: Servicebenefit-->
+    <st-radio-component [parentFormGroup]="statisticForm" [groupName]="formConfiguration.service.groupName"
+                        [submitted]="submitted"
+                        [data]="ergaenzende | async" [controlName]="formConfiguration.service.controlName"
+                        [label]="listOfTexts.service.text"></st-radio-component>
+
+    <!--Section: FileFormat-->
+    <st-radio-component [parentFormGroup]="statisticForm" [groupName]="formConfiguration.outputFormat.groupName"
+                        [submitted]="submitted"
+                        [data]="outputFormats | async" [controlName]="formConfiguration.outputFormat.controlName"
+                        [label]="listOfTexts.outputFormat.text"></st-radio-component>
+
+    <button type="submit" class="btn btn-default">Submit</button>
+
+  </form>
+</div>
+
+<div class="container">
+  <footer><span>Developed by ARS Computer und Consulting GmbH</span></footer>
+</div>

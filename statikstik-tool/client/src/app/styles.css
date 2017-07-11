@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+
+a{
+    color: #000;
+    text-decoration: none;
+}
+
+.active button span{
+    font-weight: 700;
+}
+
+.page-title{
+    font-family: 'Indie Flower', cursive;
+    font-size: 4em;
+    margin: 0px;
+    padding: 0px;
+    -webkit-transition: font-size 2s; /* Safari */
+    transition: font-size 2s;
+    cursor: pointer;
+}
+
+md-grid-list {
+    height: 100%;
+}
+
+.red{
+    color: #fc6767;
+}
+
+.mouse{
+    cursor: pointer;
+}
+
+.margtop-25{
+    margin-top: 25px !important;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.full-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-center{
+    text-align: center;
+}

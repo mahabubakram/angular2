@@ -1,0 +1,16 @@
+<div [formGroup]="parentFormGroup" class="form-horizontal">
+  <div formGroupName="{{groupName}}" class="form-group">
+    <hr *ngIf="!hide"
+        style="width: 100%; color: deepskyblue; height: 1px; background-color:deepskyblue; margin-bottom: 2px;"/>
+    <label class="col-xs-3 control-label">{{label}}:</label>
+    <div class="col-xs-9">
+      <div class="radio" *ngFor="let entry of data">
+        <label>
+          <input type="radio" value={{entry.display}} name="{{controlName}}"
+                 formControlName="{{controlName}}" (change)="onClick(entry)">
+          {{entry.display}}</label>
+      </div>
+    </div>
+    <st-error-component [submitted]="submitted" [formInput]="radioFormControl" [nameOfFormControl]="label"></st-error-component>
+  </div>
+</div>
