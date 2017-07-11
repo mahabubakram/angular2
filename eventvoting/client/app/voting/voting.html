@@ -1,0 +1,133 @@
+<div class="row" ng-show="vm.dataFound">
+  <div class="col-lg-12">
+
+    <div class="panel panel-default panel-media-list">
+      <div class="panel-heading">
+        <h3 class="text-center">{{vm.eventName}}</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-6 col-sm-offset-0">
+
+          <form name="userForm" class="form-inline">
+            <div class="col-xs-4">
+              <div class="form-group">
+                <input type="text" name="inputName" id="name" class="form-control"
+                       placeholder="Name"
+                       validation-msg-required="* Name wird benötigt"
+                       ng-model="vm.name"
+                       required>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="form-group">
+                <input type="text" name="inputDepartment" id="department" class="form-control"
+                       placeholder="Abteilung"
+                       ng-model="vm.department"
+                       validation-msg-required="* Abteilung wird benötigt"
+                       required>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row"><br></div>
+
+
+      <table class="table table-bordered table-responsive">
+        <thead>
+        <tr>
+          <th class="col-md-3 col-sm-3 col-xs-2">Vortrag</th>
+          <th class="col-md-1 col-sm-1 col-xs-1">Zeit</th>
+          <th class="col-md-3 col-sm-3 col-xs-1">Name</th>
+          <th class="col-md-2 col-sm-2 col-xs-3" id="not-for-smaller-display">Meine Teilnahme</th>
+          <th class="col-md-3 col-sm-3 col-xs-4" id="not-for-smaller-display">Mein Interesse</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="oneEvent in vm.eventsList">
+        <tr>
+
+          <td>{{oneEvent.talkNumber}} - {{oneEvent.title}}</td>
+          <td>{{oneEvent.startDateTime}}-{{oneEvent.endDateTime}} Uhr</td>
+          <td>{{oneEvent.name}}</td>
+          <td id="not-for-smaller-display">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" ng-model="oneEvent.voted" uib-btn-radio="true">Ja</label>
+              <label class="btn btn-default" ng-model="oneEvent.voted" uib-btn-radio="false">Nein</label>
+            </div>
+          </td>
+          <td id="not-for-smaller-display">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="3">3</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="2">2</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="1">1</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="0">0</label>
+            </div>
+          </td>
+        </tr>
+
+        <tr id="not-for-bigger-display">
+          <td>
+            <div>
+              <label>Meine Teilnahme</label>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" ng-model="oneEvent.voted" uib-btn-radio="true">Ja</label>
+              <label class="btn btn-default" ng-model="oneEvent.voted" uib-btn-radio="false">Nein</label>
+            </div>
+          </td>
+
+          <td colspan="2">
+            <div>
+              <label>Mein Interesse</label>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="3">3</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="2">2</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="1">1</label>
+              <label class="btn btn-default" ng-model="oneEvent.interest" uib-btn-radio="0">0</label>
+            </div>
+          </td>
+
+        </tr>
+
+
+
+        </tbody>
+      </table>
+
+
+      <div class="row">
+        <div class="col-md-10 text-left">
+          <p style="color: grey; font-size: 1em;"> ** Wenn Sie Änderungen mitteilen wollen, rufen Sie die URL bitte
+            noch einmal auf
+            und schicken ein neues Formular ab.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <button type="submit" class="btn btn-default"
+                  ng-click="vm.postResponse(userForm.inputName.$valid, userForm.inputDepartment.$valid)"
+                  ng-disabled="userForm.$invalid">
+            Speichern
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!--404 Data NotFound-->
+<div class="row" ng-show="!vm.dataFound">
+  <div class="panel panel-default panel-media-list">
+    <!--    <h2>404</h2>
+        <h2>Seite nicht gefunden</h2>-->
+    <!--    <div class="col-sm-4 col-sm-offset-4 center" style="text-align: center;">
+          <h2 style="color: #FF5375; text-align: center">Seite nicht gefunden</h2>
+          <img src="../../assets/images/404-example.png" width="50%">
+        </div>-->
+  </div>
+</div>
+
+
