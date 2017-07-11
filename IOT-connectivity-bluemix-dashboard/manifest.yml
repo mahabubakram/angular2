@@ -1,0 +1,6 @@
+---
+applications:
+ - name: hilscher-dashboard
+   command: node server/app.js
+   random-route: false
+   memory: 256M

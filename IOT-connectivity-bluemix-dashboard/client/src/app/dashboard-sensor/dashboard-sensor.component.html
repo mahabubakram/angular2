@@ -1,0 +1,151 @@
+<!-- Headline, Hilscher-Logo -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-10  col-sm-10 iot-content-header">
+      <h1>{{title}}</h1>
+    </div>
+    <div class="col-md-1 col-sm-1"><a href="http://www.hilscher.com/de/" target="_blank" class="hilscher-logo">
+      <img src="/app/assets/images/hilscher-3c_transparent.png" alt="Hilscher Logo" title="Hilscher">
+    </a></div>
+  </div>
+</div>
+
+<div class="container" style="border:10px solid #e3e3e3;padding:20px;">
+  <form class="form-horizontal" role="form"
+        *ngFor="let item of dataList;">
+
+    <!-- Distance -->
+    <div class="form-group">
+      <label for="inp_distance" class="col-md-4 col-sm-4 control-label">Distance: </label>
+      <div class="col-md-3 col-sm-3">
+        <div class="input-group">
+          <input id="inp_distance" type="text" class="form-control input-sm" placeholder={{item.distance}} readonly/>
+          <span class="input-group-addon">{{item.distanceUnit}}</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Communication Status -->
+    <div class="form-group">
+      <label class="col-md-4 col-sm-4 control-label">Communication Status: </label>
+      <div class="col-md-6 col-sm-6 control-label">
+        <div class="led-blank" *ngIf="!item || !item.connected" style="float:left"></div>
+        <div class="led-box" *ngIf="item.connected === 'connected'" style="width: 100%">
+          <div class="led-green" style="float:left"></div>
+          <p style="float:left; margin:0.5%; margin-left: 1%;">Connected</p>
+        </div>
+        <div class="led-box" *ngIf="item.connected === 'disconnected'" style="width: 100%">
+          <div class="led-red" style="float:left"></div>
+          <p style="float:left; margin:0.5%; margin-left: 1%;">Disconnected</p>
+        </div>
+        <div class="led-box" *ngIf="item.connected === 'tbd'" style="width: 100%">
+          <div class="led-yellow" style="float:left"></div>
+          <p style="float:left; margin:0.5%; margin-left: 1%;">To be Defined</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latency -->
+    <div class="form-group">
+      <label for="inp_latency" class="col-md-4 col-sm-4 control-label">Latency: </label>
+      <div class="col-md-3 col-sm-3">
+        <div class="input-group">
+          <input id="inp_latency" type="text" class="form-control input-sm" placeholder={{latency.runtime}} readonly/>
+          <span class="input-group-addon">ms</span>
+        </div>
+      </div>
+      <button type="button" class="col-md-3 col-sm-3 btn btn-info"
+              (click)="measureLatency()">On Demand Latency
+      </button>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4">
+        <div class="led-box" style="width: 100%">
+          <div class="led-blank" *ngIf="!latency || !latency.led" style="float:left"></div>
+          <div class="led-blue" *ngIf="latency && latency.led" style="float:left"></div>
+          <p style="float:left; margin:0.5%; margin-left: 1%;">Test Signal</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Time information -->
+    <div class="form-group" *ngIf="latency && latency.responsedTime">
+      <div class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Test Signal At:</div>
+      <span class="col-md-6 col-sm-6 ">{{latency.responsedTime | time}}</span>
+    </div>
+
+    <div class="form-group" *ngIf="latency && latency.requestedTime">
+      <div class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Trigger Signal At:</div>
+      <div class="col-md-6 col-sm-6 ">{{latency.requestedTime | time}}</div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Actual Date/Time:</div>
+      <span class="col-md-6 col-sm-6">{{item.currentDate | time}}</span>
+    </div>
+  </form>
+
+  <form class="form-horizontal" role="form">
+    <!-- Divider -->
+    <div class="form-group">
+      <div style="width:100%;border:1px solid #e3e3e3"></div>
+    </div>
+
+    <!-- Chart -->
+    <div class="form-group" style="text-align:center">
+      <!--<img src="/app/assets/images/chart.jpg" width="60%">-->
+      <div class="col-md-8 col-md-offset-2">
+        <div style="display: block;">
+          <canvas baseChart width="600" height="200"
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="form-group">
+      <div style="width:100%;border:1px solid #e3e3e3"></div>
+    </div>
+
+  </form>
+
+  <form class="form-horizontal" role="form" *ngFor="let item of dataList;">
+    <!-- Additional information -->
+    <div class="row" style="margin-top:20px">
+      <div for="inputType" class="col-md-4 col-sm-4 control-label"  style="padding-top:0px">Sensor Name:</div>
+      <div class="col-md-6 col-sm-6">{{item.productName}}</div>
+    </div>
+
+    <div class="row">
+      <div for="inputType" class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Vendor Name:</div>
+      <div class="col-md-6 col-sm-6">{{item.vendorName}}</div>
+    </div>
+
+    <div class="row">
+      <div for="inputType" class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Serial Number:</div>
+      <div class="col-md-6 col-sm-6">{{item.serialNumber}}</div>
+    </div>
+
+    <div class="row">
+      <div for="inputType" class="col-md-4 col-sm-4 control-label" style="padding-top:0px">Fieldbus Type:</div>
+      <div class="col-md-6 col-sm-6">{{item.networkType}}</div>
+    </div>
+
+
+  </form>
+
+</div>
+
+<div class="container">
+  <footer><span>Developed by ARS Computer und Consulting GmbH</span></footer>
+</div>

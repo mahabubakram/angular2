@@ -1,0 +1,356 @@
+[
+  {
+    "id": "1c807452.17fc8c",
+    "type": "tab",
+    "label": "Flow 1"
+  },
+  {
+    "id": "6b4a591c.014b18",
+    "type": "function",
+    "z": "1c807452.17fc8c",
+    "name": "Device payload",
+    "func": "msg.payload.d.timestamp = new Date();\nmsg.payload.createdAt = msg.payload.d.timestamp;\nreturn msg;\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 388,
+    "y": 234,
+    "wires": [
+      [
+        "bdd08633.944d68",
+        "805c97ee.3ed9e8",
+        "27caba1d.1d2476"
+      ]
+    ]
+  },
+  {
+    "id": "805c97ee.3ed9e8",
+    "type": "debug",
+    "z": "1c807452.17fc8c",
+    "name": "Debug output payload",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 644,
+    "y": 247,
+    "wires": []
+  },
+  {
+    "id": "c2dd8ed5.7dd7f",
+    "type": "comment",
+    "z": "1c807452.17fc8c",
+    "name": "2. Click to send data",
+    "info": "To automatically send data:\n1. Change *Repeat* to interval.\n2. Click Deploy button.\n",
+    "x": 126,
+    "y": 824,
+    "wires": []
+  },
+  {
+    "id": "fc2d5045.d3466",
+    "type": "websocket in",
+    "z": "1c807452.17fc8c",
+    "name": "ws input",
+    "server": "3dab5d95.584392",
+    "client": "",
+    "x": 182,
+    "y": 219,
+    "wires": [
+      [
+        "6b4a591c.014b18"
+      ]
+    ]
+  },
+  {
+    "id": "bdd08633.944d68",
+    "type": "websocket out",
+    "z": "1c807452.17fc8c",
+    "name": "ws output",
+    "server": "3dab5d95.584392",
+    "client": "",
+    "x": 598,
+    "y": 299,
+    "wires": []
+  },
+  {
+    "id": "b078a13e.6f7bc",
+    "type": "ibmiot in",
+    "z": "1c807452.17fc8c",
+    "authentication": "boundService",
+    "apiKey": "",
+    "inputType": "evt",
+    "deviceId": "DistanceSensor",
+    "applicationId": "",
+    "deviceType": "DistanceSensor",
+    "eventType": "+",
+    "commandType": "cmd",
+    "format": "json",
+    "name": "IBM IoT",
+    "service": "registered",
+    "allDevices": false,
+    "allApplications": "",
+    "allDeviceTypes": false,
+    "allEvents": true,
+    "allCommands": true,
+    "allFormats": true,
+    "qos": 0,
+    "x": 189,
+    "y": 284,
+    "wires": [
+      [
+        "6b4a591c.014b18"
+      ]
+    ]
+  },
+  {
+    "id": "68196ee.77e119",
+    "type": "ibmiot out",
+    "z": "1c807452.17fc8c",
+    "authentication": "boundService",
+    "apiKey": "",
+    "outputType": "cmd",
+    "deviceId": "DistanceSensor",
+    "deviceType": "DistanceSensor",
+    "eventCommandType": "cmd",
+    "format": "json",
+    "data": "temp:10",
+    "qos": "",
+    "name": "Send to IBM IoT Platform",
+    "service": "registered",
+    "x": 839,
+    "y": 773,
+    "wires": []
+  },
+  {
+    "id": "b82b4fed.dc818",
+    "type": "cloudant out",
+    "z": "1c807452.17fc8c",
+    "name": "To Cloudant",
+    "cloudant": "",
+    "database": "sensor-data",
+    "service": "MW-TestIoT-App-cloudantNoSQLDB",
+    "payonly": true,
+    "operation": "insert",
+    "x": 795.5,
+    "y": 726,
+    "wires": []
+  },
+  {
+    "id": "d9034370.d046",
+    "type": "http response",
+    "z": "1c807452.17fc8c",
+    "name": "/demand-sensor1 Server Out",
+    "x": 854,
+    "y": 827,
+    "wires": []
+  },
+  {
+    "id": "a46e6326.fa987",
+    "type": "debug",
+    "z": "1c807452.17fc8c",
+    "name": "Server POST request",
+    "active": true,
+    "complete": "payload",
+    "x": 357.5714645385742,
+    "y": 905.0000457763672,
+    "wires": []
+  },
+  {
+    "id": "d6285a62.0d6268",
+    "type": "function",
+    "z": "1c807452.17fc8c",
+    "name": "/demandr Server Processing",
+    "func": "var POSTBody = msg.req.body;\nconsole.log(JSON.stringify(POSTBody));\nvar dt = new Date();\n\nmsg.payload =\n    {\n     index: dt.valueOf(),\n     createdAt: dt,\n     sensor: 'sensor1'\n    };\nconsole.log(\"Returning \" + JSON.stringify(msg.payload));\nreturn msg;",
+    "outputs": "1",
+    "noerr": 0,
+    "x": 397.14288330078125,
+    "y": 775.1428833007812,
+    "wires": [
+      [
+        "68196ee.77e119",
+        "d9034370.d046",
+        "752736e8.4cc568",
+        "b82b4fed.dc818"
+      ]
+    ]
+  },
+  {
+    "id": "9f130940.1ec298",
+    "type": "http in",
+    "z": "1c807452.17fc8c",
+    "name": "/demand server in",
+    "url": "/demand-sensor1",
+    "method": "post",
+    "swaggerDoc": "",
+    "x": 130.42862483433305,
+    "y": 865.000020980835,
+    "wires": [
+      [
+        "d6285a62.0d6268",
+        "a46e6326.fa987"
+      ]
+    ]
+  },
+  {
+    "id": "5bbfa35a.f6975c",
+    "type": "function",
+    "z": "1c807452.17fc8c",
+    "name": "msg.res.set(\"Access-Control-Allow-Origin\", \"*\");",
+    "func": "msg.res.set(\"Access-Control-Allow-Origin\", \"*\");\nmsg.res.set(\"Access-Control-Allow-Headers\", \"Origin, X-Requested-With, Content-Type, Accept\");\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 789,
+    "y": 913,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "27caba1d.1d2476",
+    "type": "cloudant out",
+    "z": "1c807452.17fc8c",
+    "name": "To Cloudant",
+    "cloudant": "",
+    "database": "sensor1-event",
+    "service": "MW-TestIoT-App-cloudantNoSQLDB",
+    "payonly": true,
+    "operation": "insert",
+    "x": 606,
+    "y": 196,
+    "wires": []
+  },
+  {
+    "id": "7b55b57.756e34c",
+    "type": "inject",
+    "z": "1c807452.17fc8c",
+    "name": "event-emitter-simulation",
+    "topic": "event-data",
+    "payload": "{\"d\": {\"sensors\":[{\"measurements\": [{\"distance\": 250, \"distanceUnit\":\"cm\", \"timestamp\": 1492694377077}, {\"distance\": 573, \"distanceUnit\":\"cm\", \"timestamp\": 1492694443745}], \"connectivity\": {\"connectedStatus\":\"connected\"}, \"productName\": \"test\", \"serialNumber\": \"test\", \"vendorName\":\"test\", \"networkType\": \"test\"}]}}",
+    "payloadType": "json",
+    "repeat": "3",
+    "crontab": "",
+    "once": true,
+    "x": 142,
+    "y": 170,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "6cdfd5ca.d7900c",
+    "type": "inject",
+    "z": "1c807452.17fc8c",
+    "name": "event-emitter-simulation",
+    "topic": "event-data",
+    "payload": "{\"d\": {\"sensors\":[{\"measurements\": [{\"distance\": 2213, \"distanceUnit\":\"cm\"}], \"connectivity\": {\"connectedStatus\":\"connected\"}, \"productName\": \"test\", \"serialNumber\": \"test\", \"vendorName\":\"test\", \"networkType\": \"HI\"}]}}",
+    "payloadType": "json",
+    "repeat": "7",
+    "crontab": "",
+    "once": true,
+    "x": 149,
+    "y": 348,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "752736e8.4cc568",
+    "type": "debug",
+    "z": "1c807452.17fc8c",
+    "name": "Response Debug",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 822,
+    "y": 673,
+    "wires": []
+  },
+  {
+    "id": "bfdde804.fffbb8",
+    "type": "inject",
+    "z": "1c807452.17fc8c",
+    "name": "Hearbeat input interval",
+    "topic": "Hearbeat",
+    "payload": "{\"d\": {\"name\": \"watchDog Sensor1\"}}",
+    "payloadType": "json",
+    "repeat": "1",
+    "crontab": "",
+    "once": false,
+    "x": 151,
+    "y": 574,
+    "wires": [
+      [
+        "5aeec394.9ae94c"
+      ]
+    ]
+  },
+  {
+    "id": "5aeec394.9ae94c",
+    "type": "function",
+    "z": "1c807452.17fc8c",
+    "name": "watchDog event send",
+    "func": "return msg;",
+    "outputs": "1",
+    "noerr": 0,
+    "x": 455,
+    "y": 574,
+    "wires": [
+      [
+        "4c70a030.6977e"
+      ]
+    ]
+  },
+  {
+    "id": "4c70a030.6977e",
+    "type": "ibmiot out",
+    "z": "1c807452.17fc8c",
+    "authentication": "boundService",
+    "apiKey": "",
+    "outputType": "cmd",
+    "deviceId": "DistanceSensor",
+    "deviceType": "DistanceSensor",
+    "eventCommandType": "cmd",
+    "format": "json",
+    "data": "temp:10",
+    "qos": "",
+    "name": "Send to IBM IoT Platform",
+    "service": "registered",
+    "x": 768,
+    "y": 569,
+    "wires": []
+  },
+  {
+    "id": "fc415a09.746a38",
+    "type": "debug",
+    "z": "1c807452.17fc8c",
+    "name": "Response Debug",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 754,
+    "y": 492,
+    "wires": []
+  },
+  {
+    "id": "3725e91a.d8ce46",
+    "type": "inject",
+    "z": "1c807452.17fc8c",
+    "name": "device2bluemix-latency-event",
+    "topic": "",
+    "payload": "{\"d\": {\"index\":100, \"createdAt\": null,      \"sensor\": \"sensor1\"}}",
+    "payloadType": "json",
+    "repeat": "10",
+    "crontab": "",
+    "once": false,
+    "x": 164,
+    "y": 78,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "3dab5d95.584392",
+    "type": "websocket-listener",
+    "z": "",
+    "path": "/ws/sensor1",
+    "wholemsg": "false"
+  }
+]

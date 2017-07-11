@@ -1,0 +1,321 @@
+[
+  {
+    "id": "ce1d8637.e6a2b8",
+    "type": "function",
+    "z": "2ba213b6.aa14ec",
+    "name": "Device payload",
+    "func": "msg.payload.d.timestamp = new Date();\nmsg.payload.createdAt = msg.payload.d.timestamp;\nreturn msg;\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 367,
+    "y": 203,
+    "wires": [
+      [
+        "fdf8cf1b.caeb6",
+        "b3c22250.ab903"
+      ]
+    ]
+  },
+  {
+    "id": "cc827491.c95438",
+    "type": "debug",
+    "z": "2ba213b6.aa14ec",
+    "name": "Sensor2 Debug",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 649,
+    "y": 274,
+    "wires": []
+  },
+  {
+    "id": "de4bd64c.a41ad8",
+    "type": "comment",
+    "z": "2ba213b6.aa14ec",
+    "name": "Click to send latency check request",
+    "info": "To automatically send data:\n1. Change *Repeat* to interval.\n2. Click Deploy button.\n",
+    "x": 171,
+    "y": 868,
+    "wires": []
+  },
+  {
+    "id": "52177388.5097ec",
+    "type": "websocket in",
+    "z": "2ba213b6.aa14ec",
+    "name": "ws input sensor2",
+    "server": "5bffdf1.3b2862",
+    "client": "",
+    "x": 147,
+    "y": 218,
+    "wires": [
+      [
+        "ce1d8637.e6a2b8"
+      ]
+    ]
+  },
+  {
+    "id": "fdf8cf1b.caeb6",
+    "type": "websocket out",
+    "z": "2ba213b6.aa14ec",
+    "name": "ws output",
+    "server": "5bffdf1.3b2862",
+    "client": "",
+    "x": 623,
+    "y": 326,
+    "wires": []
+  },
+  {
+    "id": "47e8faca.563244",
+    "type": "ibmiot in",
+    "z": "2ba213b6.aa14ec",
+    "authentication": "boundService",
+    "apiKey": "",
+    "inputType": "evt",
+    "deviceId": "DistanceSensor2",
+    "applicationId": "",
+    "deviceType": "DistanceSensor2",
+    "eventType": "+",
+    "commandType": "cmd",
+    "format": "json",
+    "name": "IBM IoT",
+    "service": "registered",
+    "allDevices": false,
+    "allApplications": "",
+    "allDeviceTypes": false,
+    "allEvents": true,
+    "allCommands": true,
+    "allFormats": true,
+    "qos": 0,
+    "x": 181,
+    "y": 268,
+    "wires": [
+      [
+        "ce1d8637.e6a2b8"
+      ]
+    ]
+  },
+  {
+    "id": "542122d0.00b32c",
+    "type": "ibmiot out",
+    "z": "2ba213b6.aa14ec",
+    "authentication": "boundService",
+    "apiKey": "",
+    "outputType": "cmd",
+    "deviceId": "DistanceSensor2",
+    "deviceType": "DistanceSensor2",
+    "eventCommandType": "cmd",
+    "format": "json",
+    "data": "temp:10",
+    "qos": "",
+    "name": "Send to IBM IoT Platform",
+    "service": "registered",
+    "x": 842,
+    "y": 939,
+    "wires": []
+  },
+  {
+    "id": "bc61bf5c.9550e",
+    "type": "cloudant out",
+    "z": "2ba213b6.aa14ec",
+    "name": "To Cloudant Sensor2",
+    "cloudant": "",
+    "database": "sensor-data",
+    "service": "MW-TestIoT-App-cloudantNoSQLDB",
+    "payonly": true,
+    "operation": "insert",
+    "x": 828.5,
+    "y": 892,
+    "wires": []
+  },
+  {
+    "id": "8d0394c3.6e89d8",
+    "type": "http response",
+    "z": "2ba213b6.aa14ec",
+    "name": "/demand-sensor2 Server Out",
+    "x": 857,
+    "y": 993,
+    "wires": []
+  },
+  {
+    "id": "49e3eafd.dd4024",
+    "type": "debug",
+    "z": "2ba213b6.aa14ec",
+    "name": "Server POST request",
+    "active": true,
+    "complete": "payload",
+    "x": 438.57147216796875,
+    "y": 1081.0000610351562,
+    "wires": []
+  },
+  {
+    "id": "f4fbda7c.bb6448",
+    "type": "function",
+    "z": "2ba213b6.aa14ec",
+    "name": "/demand-sensor2 Server Processing",
+    "func": "var POSTBody = msg.req.body;\nconsole.log(JSON.stringify(POSTBody));\nvar dt = new Date();\n\nmsg.payload =\n    {\n     index: dt.valueOf(),\n     createdAt: dt,\n     sensor: 'sensor2'\n    };\nconsole.log(\"Returning \" + JSON.stringify(msg.payload));\nreturn msg;",
+    "outputs": "1",
+    "noerr": 0,
+    "x": 486.14288330078125,
+    "y": 982.1428833007812,
+    "wires": [
+      [
+        "bc61bf5c.9550e",
+        "542122d0.00b32c",
+        "8d0394c3.6e89d8",
+        "e650f32a.79dce"
+      ]
+    ]
+  },
+  {
+    "id": "fb9e0567.60a538",
+    "type": "http in",
+    "z": "2ba213b6.aa14ec",
+    "name": "/demand-sensor2 server in",
+    "url": "/demand-sensor2",
+    "method": "post",
+    "swaggerDoc": "",
+    "x": 163.42862483433305,
+    "y": 1031.000020980835,
+    "wires": [
+      [
+        "f4fbda7c.bb6448"
+      ]
+    ]
+  },
+  {
+    "id": "b3c22250.ab903",
+    "type": "cloudant out",
+    "z": "2ba213b6.aa14ec",
+    "name": "To Cloudant Sensor2",
+    "cloudant": "",
+    "database": "sensor2-event",
+    "service": "MW-TestIoT-App-cloudantNoSQLDB",
+    "payonly": true,
+    "operation": "insert",
+    "x": 661,
+    "y": 223,
+    "wires": []
+  },
+  {
+    "id": "e650f32a.79dce",
+    "type": "debug",
+    "z": "2ba213b6.aa14ec",
+    "name": "Response Debug",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 825,
+    "y": 839,
+    "wires": []
+  },
+  {
+    "id": "13f84f01.dfba91",
+    "type": "comment",
+    "z": "2ba213b6.aa14ec",
+    "name": "For sensor2 flow",
+    "info": "To automatically send data:\n1. Change *Repeat* to interval.\n2. Click Deploy button.\n",
+    "x": 453,
+    "y": 41,
+    "wires": []
+  },
+  {
+    "id": "f12df041.3f0a8",
+    "type": "comment",
+    "z": "2ba213b6.aa14ec",
+    "name": "Sensor2 data events via IoT nodes",
+    "info": "To automatically send data:\n1. Change *Repeat* to interval.\n2. Click Deploy button.\n",
+    "x": 197,
+    "y": 127,
+    "wires": []
+  },
+  {
+    "id": "59703a62.9e7114",
+    "type": "ibmiot out",
+    "z": "2ba213b6.aa14ec",
+    "authentication": "boundService",
+    "apiKey": "",
+    "outputType": "cmd",
+    "deviceId": "DistanceSensor2",
+    "deviceType": "DistanceSensor2",
+    "eventCommandType": "cmd",
+    "format": "json",
+    "data": "temp:10",
+    "qos": "",
+    "name": "Send to IBM IoT Platform",
+    "service": "registered",
+    "x": 778,
+    "y": 590,
+    "wires": []
+  },
+  {
+    "id": "2d7d3e00.4324e2",
+    "type": "debug",
+    "z": "2ba213b6.aa14ec",
+    "name": "Response Debug",
+    "active": true,
+    "console": "true",
+    "complete": "true",
+    "x": 766,
+    "y": 506,
+    "wires": []
+  },
+  {
+    "id": "837fd76a.dafe88",
+    "type": "function",
+    "z": "2ba213b6.aa14ec",
+    "name": "watchDog event send",
+    "func": "return msg;",
+    "outputs": "1",
+    "noerr": 0,
+    "x": 467,
+    "y": 588,
+    "wires": [
+      [
+        "59703a62.9e7114"
+      ]
+    ]
+  },
+  {
+    "id": "42c5f85c.873a78",
+    "type": "inject",
+    "z": "2ba213b6.aa14ec",
+    "name": "Hearbeat input interval",
+    "topic": "Hearbeat",
+    "payload": "{\"d\": {\"name\": \"watchDog Sensor2\"}}",
+    "payloadType": "json",
+    "repeat": "1",
+    "crontab": "",
+    "once": false,
+    "x": 163,
+    "y": 588,
+    "wires": [
+      [
+        "837fd76a.dafe88"
+      ]
+    ]
+  },
+  {
+    "id": "7788d497.945c5c",
+    "type": "inject",
+    "z": "2ba213b6.aa14ec",
+    "name": "device2bluemix-latency-event",
+    "topic": "",
+    "payload": "{\"d\": {\"index\":100, \"createdAt\": null,      \"sensor\": \"sensor2\"}}",
+    "payloadType": "json",
+    "repeat": "10",
+    "crontab": "",
+    "once": false,
+    "x": 185,
+    "y": 75,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "5bffdf1.3b2862",
+    "type": "websocket-listener",
+    "z": "",
+    "path": "/ws/sensor2",
+    "wholemsg": "false"
+  }
+]
